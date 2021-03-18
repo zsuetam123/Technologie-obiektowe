@@ -1,0 +1,28 @@
+Studenci:
+- Anna Huk (annahuk_99@o2.pl) gr. 1ID21A
+- Mateusz Hupa (mateusz.hupa@gmail.com) gr. 1ID21A
+
+Temat projektu:
+- Modelowanie bazy danych (nr. 27)
+
+Technologie:
+SpringBoot, Vue.js
+
+Harmonogram (funkcjonalności):
+1. Dodawanie/usuwanie/modyfikacja tabel.
+2. Dodawanie/usuwanie/modyfikacja kolumn w tabelach.
+3. Ustawianie kluczy głównych i kluczy obcych w tabelach.
+4. Dodawanie/usuwanie/modyfikacja relacji pomiędzy tabelami.
+5. Zapis modelu bazy danych w pliku graficznym.
+6. Konwersja modelu graficznego na skrypt tworzący bazę danych.
+
+Podział prac:
+Anna Huk: 1,2,6
+Mateusz Hupa: 3,4,5
+
+Tematy projektów:
+1. Programowanie systemów rozproszonych:
+   - Zespół: Mateusz Hupa, Anna Huk; temat: ,,Graf"
+2. Tematy prac inżynierskich:
+   - Mateusz Hupa: ,,Projekt i implementacja symulatora do treningu konsultanta sieci telekomunikacyjnej."
+   - Anna Huk: ,,Projekt i implementacja edukacyjnego kalkulatora liczb rozmytych z wizualizacją danych."
