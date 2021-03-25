@@ -11,10 +11,11 @@ SpringBoot, Vue.js
 Harmonogram (funkcjonalności):
 1. Dodawanie/usuwanie/modyfikacja tabel.
 2. Dodawanie/usuwanie/modyfikacja kolumn w tabelach.
-3. Ustawianie kluczy głównych i kluczy obcych w tabelach.
+3. Ustawianie kluczy głównych i kluczy obcych w tabelach oraz wprowadzanie asocjacji o liczności jeden do jednego, jeden do wielu, wiele do wielu.
 4. Dodawanie/usuwanie/modyfikacja relacji pomiędzy tabelami.
 5. Zapis modelu bazy danych w pliku graficznym.
 6. Konwersja modelu graficznego na skrypt tworzący bazę danych.
+7. Możliwość wygenerowania schematu bazy danych na podstawie skryptu.
 
 Podział prac:
 Anna Huk: 1,2,6
