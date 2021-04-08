@@ -5,11 +5,37 @@
     <title>Modelowanie bazy danych</title>
     <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="move.js"></script>
 </head>
 <body>
 
 <div id="app">
-    <h1>Modelujemy!</h1>
+
+        <div class="toppane">
+
+            <button class="menu" type="button">Plik</button>
+            <button class="menu" type="button">Edycja</button>
+            <button class="menu" type="button">Pomoc</button>
+
+        </div>
+        <div class="leftpane"></div>
+        <div class="middlepane"></div>
+        <div class="rightpane">
+
+            <!-- Draggable DIV -->
+            <div id="mydiv">
+                <!-- Include a header DIV with the same name as the draggable DIV, followed by "header" -->
+                <div id="mydivheader"><h2>Tabela</h2></div>
+                <hr>
+                <p>Kolumna</p>
+                <hr>
+                <p>Kolumna</p>
+            </div>
+
+        </div>
+
+
+
 </div>
 
 <script>
@@ -17,7 +43,28 @@
         el: '#app',
 
     });
+
+    // Get HTML head element
+    var head = document.getElementsByTagName('HEAD')[0];
+
+    // Create new link Element
+    var link = document.createElement('link');
+
+    // set the attributes for link element
+    link.rel = 'stylesheet';
+
+    link.type = 'text/css';
+
+    link.href = 'style.css';
+
+    // Append link element to HTML head
+    head.appendChild(link);
+
+    // Make the DIV element draggable:
+    dragElement(document.getElementById("mydiv"));
+
 </script>
 
 </body>
 </html>
+
