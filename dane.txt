@@ -6,7 +6,7 @@ Temat projektu:
 - Modelowanie bazy danych (nr. 27)
 
 Technologie:
-SpringBoot, Vue.js
+JavaFX, SceneBuilder
 
 Harmonogram (funkcjonalności):
 1. Dodawanie/usuwanie/modyfikacja tabel.
