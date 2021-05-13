@@ -1,43 +1,60 @@
 package okienkowe_narzedzie_do_modelowania_bazy;
 
 import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.CheckBox;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.stage.Window;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TabelaController{
 
     @FXML
     public VBox kolumnyVbox;
     @FXML
+    public Circle blueCircle;
+    @FXML
+    public CheckBox CheckBoxDrawLine;
+    @FXML
     private VBox tabela;
-    @FXML
-    private ToggleButton expandConstrainsOptions1;
-    @FXML
-    private ToggleButton expandConstrainsOptions2;
 
     private Line line = null;
-    private Integer numerKolumny = 2;
+    private Integer numerKolumny = 0;
     private double x, y;
     private MainPageController mainPageController;
     private boolean lineStart;
     private boolean lineEnd;
+    private RowController rowController;
+    private List<RowController> listaKolumn = new ArrayList<>();
 
+    public void initialize() throws IOException {
 
-    public void initialize() {
+        numerKolumny+=1;
+        FXMLLoader loader = new FXMLLoader(TabelaController.class.getResource("/fxml/Row.fxml"));
+        kolumnyVbox.getChildren().add(loader.load());
+        rowController = loader.getController();
+        rowController.setColumnNumber(numerKolumny, this);
+        listaKolumn.add(rowController);
+
+        numerKolumny+=1;
+        FXMLLoader loader2 = new FXMLLoader(TabelaController.class.getResource("/fxml/Row.fxml"));
+        kolumnyVbox.getChildren().add(loader2.load());
+        rowController = loader2.getController();
+        rowController.setColumnNumber(numerKolumny, this);
+        listaKolumn.add(rowController);
 
     }
 
-        public void enableDrag () {
+    public void enableDrag2 () {
 
             tabela.setLayoutX(500);
             tabela.setLayoutY(500);
@@ -59,10 +76,10 @@ public class TabelaController{
                     line.setStartX(mouseEvent.getSceneX() + x);
                     line.setStartY(mouseEvent.getSceneY() + y);
                 } else {
-                    assert line != null;
+                    if(line !=null && lineEnd){
                     line.setEndX(mouseEvent.getSceneX() + x);
                     line.setEndY(mouseEvent.getSceneY() + y);
-                }
+                }}
             });
 
             tabela.setOnMouseEntered(mouseEvent -> {
@@ -80,42 +97,21 @@ public class TabelaController{
             });
         }
 
-    public void addColumn(ActionEvent event) {
+    public void addColumn(ActionEvent event) throws IOException {
 
-            VBox vBox = new VBox();
-            vBox.setAlignment(Pos.CENTER_LEFT);
-
-            HBox hBox = new HBox();
-            hBox.setAlignment(Pos.CENTER_LEFT);
-
-
-            Separator separator = new Separator();
-
-            Label label = new Label();
-            numerKolumny+=1;
-            label.setText(numerKolumny.toString() + ".");
-
-            TextField textField = new TextField();
-            textField.setFocusTraversable(false);
-            textField.setPromptText("Nazwa kolumny");
-            textField.setAlignment(Pos.CENTER);
-
-            ToggleButton expandable = new ToggleButton();
-            expandable.setText("...");
-            expandable.setFocusTraversable(false);
-            expandable.setOnAction(this::expand);
-
-            hBox.getChildren().add(label);
-            hBox.getChildren().add(textField);
-            hBox.getChildren().add(expandable);
-            vBox.getChildren().add(hBox);
-
-            kolumnyVbox.getChildren().add(vBox);
-            kolumnyVbox.getChildren().add(separator);
+        numerKolumny+=1;
+        FXMLLoader loader = new FXMLLoader(TabelaController.class.getResource("/fxml/Row.fxml"));
+        kolumnyVbox.getChildren().add(loader.load());
+        rowController = loader.getController();
+        rowController.setColumnNumber(numerKolumny, this);
+        listaKolumn.add(rowController);
 
     }
 
-    public void DrawLine(MouseEvent mouseEvent) {
+    public void DrawLine2(MouseEvent mouseEvent) {
+
+        Bounds bounds = CheckBoxDrawLine.localToScene(CheckBoxDrawLine.getBoundsInLocal());
+        System.out.println(bounds);
 
         x = tabela.getLayoutX() - mouseEvent.getSceneX();
         y = tabela.getLayoutY() - mouseEvent.getSceneY();
@@ -132,6 +128,9 @@ public class TabelaController{
             mainPageController.drawLine = true;
             mainPageController.line = line;
             lineStart = true;
+
+            System.out.println(line);
+
         } else {
             line = mainPageController.line;
             line.setEndX(mouseEvent.getSceneX() + x);
@@ -150,41 +149,122 @@ public class TabelaController{
         this.mainPageController = mainPageController;
     }
 
-    public void expand(ActionEvent actionEvent) {
+    public void deleteColumn(ActionEvent actionEvent) {
+
+        if(numerKolumny > 0){
+        kolumnyVbox.getChildren().remove(numerKolumny-1, numerKolumny);
+        listaKolumn.remove(numerKolumny-1);
+        numerKolumny-=1;}
+
+    }
+
+    public void usunietoKolumne(Integer colNum){
+
+        if(numerKolumny > 0){
+            kolumnyVbox.getChildren().remove(colNum-1, colNum);
+            numerKolumny-=1;
+
+            listaKolumn.remove(colNum-1);
+
+            int i = 0;
+
+            for(RowController kolumna : listaKolumn){
+
+                kolumna.updateColumnNumber(++i);
+
+            }
+
+        }
+
+    }
+
+    public void deleteTable(ActionEvent actionEvent) {
 
         Node source = (Node) actionEvent.getSource();
-        Node parent = source.getParent().getParent();
+        Node parent = source.getParent().getParent().getParent().getParent();
 
-        VBox parnt = (VBox) parent;
-        System.out.println(parnt);
+        tabela.getScene().setCursor(Cursor.DEFAULT);
+        mainPageController.mainPane.getChildren().remove(parent);
 
-        HBox hBox = new HBox();
-        hBox.setAlignment(Pos.CENTER_LEFT);
+    }
 
-        CheckBox kluczGlowny = new CheckBox();
-        kluczGlowny.setText("KG");
-        CheckBox kluczObcy = new CheckBox();
-        kluczObcy.setText("KO");
-        CheckBox unikat = new CheckBox();
-        unikat.setText("U");
-        CheckBox nieNull = new CheckBox();
-        nieNull.setText("NN");
+    public void enableDrag () {
 
-        ComboBox comboBoxGeneric= new ComboBox();
-        comboBoxGeneric.getItems().removeAll();
-        comboBoxGeneric.getItems().addAll("INTEGER", "VARCHAR", "DATE");
-        comboBoxGeneric.getSelectionModel().select("Typ");
-        comboBoxGeneric.setFocusTraversable(false);
+        tabela.setLayoutX(500);
+        tabela.setLayoutY(500);
 
-        Label label = new Label();
-        label.setText("   ");
+        tabela.setOnMousePressed(mouseEvent -> {
 
-        hBox.getChildren().add(label);
-        hBox.getChildren().add(comboBoxGeneric);
-        hBox.getChildren().add(kluczGlowny);
-        hBox.getChildren().add(kluczObcy);
-        hBox.getChildren().add(unikat);
-        hBox.getChildren().add(nieNull);
-        parnt.getChildren().add(hBox);
+            x = tabela.getLayoutX() - mouseEvent.getSceneX();
+            y = tabela.getLayoutY() - mouseEvent.getSceneY();
+            tabela.getScene().setCursor(Cursor.MOVE);
+        });
+
+        tabela.setOnMouseReleased(mouseEvent -> tabela.getScene().setCursor(Cursor.HAND));
+
+        tabela.setOnMouseDragged(mouseEvent -> {
+
+            Bounds bounds = blueCircle.localToScreen(blueCircle.getBoundsInLocal());
+
+            tabela.setLayoutX(mouseEvent.getSceneX() + x);
+            tabela.setLayoutY(mouseEvent.getSceneY() + y);
+            if(line != null && lineStart){
+
+                line.setStartX(bounds.getMinX()- 177);
+                line.setStartY(bounds.getMinY() - 20);
+
+               // line.setStartX(mouseEvent.getSceneX() + x);
+               // line.setStartY(mouseEvent.getSceneY() + y);
+            } else {
+                if(line !=null && lineEnd){
+
+                    line.setEndX(bounds.getMinX()- 177);
+                    line.setEndY(bounds.getMinY() - 20);
+
+                 //   line.setEndX(mouseEvent.getSceneX() + x);
+                //    line.setEndY(mouseEvent.getSceneY() + y);
+                }}
+        });
+
+        tabela.setOnMouseEntered(mouseEvent -> {
+
+            if (!mouseEvent.isPrimaryButtonDown()) {
+                tabela.getScene().setCursor(Cursor.HAND);
+            }
+        });
+
+        tabela.setOnMouseExited(mouseEvent -> {
+
+            if (!mouseEvent.isPrimaryButtonDown()) {
+                tabela.getScene().setCursor(Cursor.DEFAULT);
+            }
+        });
+    }
+
+    public void drawLine(MouseEvent mouseEvent) {
+
+        Bounds bounds = blueCircle.localToScreen(blueCircle.getBoundsInLocal());
+
+        if (!mainPageController.drawLine) {
+            line = new Line();
+            mainPageController.mainPane.getChildren().add(line);
+            line.toBack();
+            line.setStartX(bounds.getMinX()- 177);
+            line.setStartY(bounds.getMinY() - 20);
+            line.setEndX(bounds.getMinX()- 177);
+            line.setEndY(bounds.getMinY() - 20);
+            mainPageController.drawLine = true;
+            mainPageController.line = line;
+            lineStart = true;
+
+        } else {
+            line = mainPageController.line;
+            line.setEndX(bounds.getMinX()- 177);
+            line.setEndY(bounds.getMinY() - 20);
+            mainPageController.drawLine = false;
+            mainPageController.line = line;
+            lineEnd = true;
+        }
+
     }
 }

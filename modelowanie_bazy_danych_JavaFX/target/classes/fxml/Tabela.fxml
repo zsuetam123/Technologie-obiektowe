@@ -4,10 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
@@ -18,44 +16,19 @@
          <children>
             <VBox style="-fx-background-color: lightgrey; -fx-border-style: solid;">
                <children>
-                  <TextField alignment="CENTER" focusTraversable="false" promptText="Nazwa tabeli" />
-                  <Separator prefWidth="200.0" />
-                  <VBox fx:id="kolumnyVbox">
-                     <children>
-                        <VBox>
-                           <children>
-                              <HBox fx:id="kolumna1" alignment="CENTER_LEFT">
-                                 <children>
-                                    <Label text="1." />
-                                    <TextField alignment="CENTER" focusTraversable="false" promptText="Nazwa kolumny" />
-                                    <ToggleButton fx:id="expandConstrainsOptions1" focusTraversable="false" mnemonicParsing="false" onAction="#expand" text="..." />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                        <Separator prefWidth="200.0" />
-                        <VBox>
-                           <children>
-                              <HBox fx:id="kolumna2" alignment="CENTER_LEFT">
-                                 <children>
-                                    <Label text="2." />
-                                    <TextField alignment="CENTER" focusTraversable="false" promptText="Nazwa kolumny" />
-                                    <ToggleButton fx:id="expandConstrainsOptions2" focusTraversable="false" mnemonicParsing="false" onAction="#expand" text="..." />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                        <Separator prefWidth="200.0" />
-                     </children>
-                  </VBox>
                   <HBox alignment="CENTER_RIGHT">
                      <children>
-                        <CheckBox fx:id="CheckBoxDrawLine" mnemonicParsing="false" onMouseClicked="#DrawLine" />
-                        <Button fx:id="plusButton" alignment="CENTER_RIGHT" focusTraversable="false" mnemonicParsing="false" onAction="#addColumn" text="+">
-                           <HBox.margin>
-                              <Insets bottom="1.0" />
-                           </HBox.margin>
-                        </Button>
+                        <Button fx:id="deleteButton" alignment="CENTER_RIGHT" focusTraversable="false" mnemonicParsing="false" onAction="#deleteTable" text="X" />
+                        <TextField alignment="CENTER" focusTraversable="false" prefHeight="31.0" prefWidth="151.0" promptText="Nazwa tabeli" />
+                        <Button fx:id="plusButton" alignment="CENTER_RIGHT" focusTraversable="false" mnemonicParsing="false" onAction="#addColumn" text="+" />
+                        <Button fx:id="minusButton" alignment="CENTER_RIGHT" focusTraversable="false" mnemonicParsing="false" onAction="#deleteColumn" text="-" />
+                     </children>
+                  </HBox>
+                  <Separator prefWidth="200.0" />
+                  <VBox fx:id="kolumnyVbox" />
+                  <HBox alignment="CENTER_RIGHT">
+                     <children>
+                        <CheckBox fx:id="CheckBoxDrawLine" mnemonicParsing="false" />
                         <ComboBox fx:id="connectionTypeComboBox" focusTraversable="false" promptText="Rodzaj połączenia">
                            <HBox.margin>
                               <Insets bottom="1.0" />
@@ -67,7 +40,7 @@
             </VBox>
             <VBox style="-fx-background-color: transparent;">
                <children>
-                  <Circle fill="DODGERBLUE" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="blueCircle" fill="DODGERBLUE" onMouseClicked="#drawLine" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
             </VBox>
          </children>
